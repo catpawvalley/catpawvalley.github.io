@@ -106,7 +106,7 @@ header{
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    /*background-color: #f4f4f4;*/
     text-align: center;
 }
 
@@ -257,7 +257,11 @@ body {
     
 	#categories_body button{
 		font-size: 1.2em;
-		color:black;
+		color:darkred;
+	}
+
+	body {
+    	background-color:darkred;
 	}
 
 }
