@@ -229,10 +229,12 @@ body {
   color: #333;
 }*/
 
-@media only screen and (max-width: 720px) {
+@media screen and (max-width: 720px) {
     /* Adjust font sizes, margins, and paddings for smaller screens */
 
-
+    body {
+    	background-color:darkred;
+	}
 
     #categories_body button{
 		/*border-style: solid;
@@ -251,7 +253,7 @@ body {
 }
 
 /* Styles for screens wider than 720 pixels (e.g., tablets and desktops) */
-@media only screen and (min-width: 721px) {
+@media screen and (min-width: 721px) {
     
 	#categories_body button{
 		font-size: 1.2em;
