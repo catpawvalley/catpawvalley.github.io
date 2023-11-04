@@ -244,6 +244,10 @@ body {
 		font-size: 3.0em;
 		color:red;
 	}
+
+	#categories h1{
+		font-size: 4.0em;
+	}
 }
 
 /* Styles for screens wider than 720 pixels (e.g., tablets and desktops) */
