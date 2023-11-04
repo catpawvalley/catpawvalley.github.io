@@ -233,7 +233,7 @@ body {
     /* Adjust font sizes, margins, and paddings for smaller screens */
 
     body {
-    	background-color: #f4f4f4;
+    	background-color:darkred;
 	}
 
     #categories_body button{
@@ -261,7 +261,7 @@ body {
 	}
 
 	body {
-    	background-color:darkred;
+    	background-color:#f4f4f4;
 	}
 
 }
