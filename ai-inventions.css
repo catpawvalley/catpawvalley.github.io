@@ -173,8 +173,7 @@ body {
 	background-color: #cfe2f3;
 	margin: 0.5%;
 	padding: 1%;
-	font-size: 1.2em;
-	color:black;
+	
 }
 
 #categories_body button:hover{
@@ -249,5 +248,10 @@ body {
 
 /* Styles for screens wider than 720 pixels (e.g., tablets and desktops) */
 @media only screen and (min-width: 721px) {
-    /* Adjust styles for larger screens */
+    
+	#categories_body button{
+		font-size: 1.2em;
+		color:black;
+	}
+
 }
