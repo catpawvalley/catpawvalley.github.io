@@ -229,3 +229,25 @@ body {
   margin: 0 0 20px;
   color: #333;
 }*/
+
+@media only screen and (max-width: 720px) {
+    /* Adjust font sizes, margins, and paddings for smaller screens */
+
+
+
+    #categories_body button{
+		/*border-style: solid;
+		border-radius: 20px;
+		border-color: #3d85c6;
+		background-color: #cfe2f3;
+		margin: 0.5%;
+		padding: 1%;*/
+		font-size: 3.0em;
+		/*color:black;*/
+	}
+}
+
+/* Styles for screens wider than 720 pixels (e.g., tablets and desktops) */
+@media only screen and (min-width: 721px) {
+    /* Adjust styles for larger screens */
+}
