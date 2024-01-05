@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		#main{
+			background-color:black;
+			width:40vw;
+			height:90vh;
+			display: block;
+			margin: auto;
+		}
+		#main_canvas{
+			/*display: block;
+			margin: auto;*/
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<canvas id="main_canvas" width="720px" height="720px">
+		</canvas>
+	</div>
+	
+	<script type="text/javascript">
+		//var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        //var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var main_div = document.getElementById("main");
+		var canvas = document.getElementById("main_canvas");
+		//console.log(window.getComputedStyle(main_div).width);
+		var border_width_str = window.getComputedStyle(main_div).width;
+		var border_height_str = window.getComputedStyle(main_div).height;
+		var border_width = parseFloat(border_width_str);
+		var border_height = parseFloat(border_height_str);
+		//console.log("border width = " + border_width);
+		//console.log("border height = " + border_height);
+		canvas.style.width = border_height_str;
+		canvas.style.height = border_height_str;
+		var ctx = canvas.getContext("2d");//rendering context
+		var paddle_width = 100;
+		var paddle_height = 30;
+		var paddle_speed = 30;
+		var ballSize = 20;
+		var squareX = (border_width - paddle_width) / 2;
+		var squareY = (border_height - paddle_height) - 20;
+		var ballX = (border_width - ballSize) / 2;
+		var ballY = (border_height - ballSize) / 2;
+		var speed = border_width / 100;
+		var incrementX = 0;
+		var incrementY = speed;
+		//console.log("squareX = " + squareX);
+		//console.log("squareY = " + squareY);
+
+		document.addEventListener('keydown', function(event) {
+            var outputElement = document.getElementById('output');
+
+            switch(event.key) {
+                //case 'ArrowUp':
+                    //squareY -= 5;
+                    //break;
+                //case 'ArrowDown':
+                    //squareY += 5;
+                    //break;
+                case 'ArrowLeft':
+                	if(!resolveborders(-10))
+                    	squareX -= paddle_speed;
+                    break;
+                case 'ArrowRight':
+                	if(!resolveborders(10))
+                    	squareX += paddle_speed;
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        function resolveborders(p){
+        	if(p < 0 && squareX - 10 < 0)
+        		return true;
+        	if(p > 0 && squareX + paddle_width + 10 > border_width)
+        		return true;
+        }
+
+		function drawSquare(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.fillStyle = "red";
+			ctx.fillRect(squareX, squareY, paddle_width, paddle_height);
+			ctx.fillStyle = "yellow"; //its like that harry potter thing
+			ctx.fillRect(ballX, ballY, ballSize, ballSize);
+		}
+
+		function resolveball(){
+			
+			if(ballY + ballSize >= squareY && ballX >= squareX && ballX <= squareX + paddle_width ){
+				if(Math.floor(Math.random() * 1) > 0 )
+					incrementX = speed;
+				else
+					incrementX = speed * -1;
+				incrementY = speed*-1;
+				//console.log("incrementX = "+incrementX);
+			}
+			if(ballX <= 0)
+				incrementX = speed;
+			if(ballX >= border_width)
+				incrementX = speed*-1;
+			if(ballY <= 0)
+				incrementY = speed;
+			if(ballY > border_height)
+				resetball();
+			ballX += incrementX;
+			ballY += incrementY;
+		}
+
+		function resetball(){
+			ballX = (border_width - ballSize) / 2;
+			ballY = (border_height - ballSize) / 2;
+			incrementX = 0;
+			incrementY = speed;
+		}
+
+		function animate() {
+			resolveball();
+            drawSquare();
+            requestAnimationFrame(animate);
+        }
+
+        animate(); // Start the animation loop
+	</script>
+</body>
+</html>
