@@ -22,6 +22,27 @@
 	</div>
 	
 	<script type="text/javascript">
+		class Box{
+			constructor(x, y, size){
+				this.x = x;
+				this.y = y;
+				this.size = size;
+				this.hit = false;
+			}
+			checkCollision(ballX, ballY, ballSize) {
+    			if (
+     				ballX + ballSize > this.x &&
+      				ballX < this.x + this.size &&
+      				ballY + ballSize > this.y &&
+      				ballY < this.y + this.size
+   				) {
+      				this.hit = true;
+      				return true;
+    			}
+    			return false;
+  			}
+
+		}
 		//var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
         //var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         var main_div = document.getElementById("main");
@@ -38,7 +59,7 @@
 		var ctx = canvas.getContext("2d");//rendering context
 		var paddle_width = 100;
 		var paddle_height = 30;
-		var paddle_speed = 30;
+		var paddle_speed = 20;
 		var ballSize = 20;
 		var squareX = (border_width - paddle_width) / 2;
 		var squareY = (border_height - paddle_height) - 20;
@@ -49,9 +70,17 @@
 		var incrementY = speed;
 		//console.log("squareX = " + squareX);
 		//console.log("squareY = " + squareY);
+		var paddle_left = false;
+		var paddle_right = false;
+		var boxArray = [];
+		for (let i = 0; i < 10; i++) {
+			let z = Math.floor(border_width * 0.10);
+			boxArray.push(new Box(i * z, Math.floor(border_height * 0.10), z ) );
+		}
+
 
 		document.addEventListener('keydown', function(event) {
-            var outputElement = document.getElementById('output');
+            //var outputElement = document.getElementById('output');
 
             switch(event.key) {
                 //case 'ArrowUp':
@@ -61,12 +90,41 @@
                     //squareY += 5;
                     //break;
                 case 'ArrowLeft':
-                	if(!resolveborders(-10))
-                    	squareX -= paddle_speed;
+                	//if(!resolveborders(-10))
+                    	//squareX -= paddle_speed;
+                	paddle_left = true;
+                	//console.log("paddle = " + paddle_move);
                     break;
                 case 'ArrowRight':
-                	if(!resolveborders(10))
-                    	squareX += paddle_speed;
+                	//if(!resolveborders(10))
+                    	//squareX += paddle_speed;
+                	paddle_right = true;
+                	//console.log("paddle = " + paddle_move);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        document.addEventListener('keyup', function(event) {
+        	switch(event.key) {
+                //case 'ArrowUp':
+                    //squareY -= 5;
+                    //break;
+                //case 'ArrowDown':
+                    //squareY += 5;
+                    //break;
+                case 'ArrowLeft':
+                	//if(!resolveborders(-10))
+                    	//squareX -= paddle_speed;
+                	paddle_left = false;
+                	//console.log("paddle = " + paddle_move);
+                    break;
+                case 'ArrowRight':
+                	//if(!resolveborders(10))
+                    	//squareX += paddle_speed;
+                	paddle_right = false;
+                	//console.log("paddle = " + paddle_move);
                     break;
                 default:
                     break;
@@ -74,28 +132,58 @@
         });
 
         function resolveborders(p){
-        	if(p < 0 && squareX - 10 < 0)
-        		return true;
-        	if(p > 0 && squareX + paddle_width + 10 > border_width)
-        		return true;
+
+        	if(p < 0 && squareX - paddle_speed < 0)
+        		return false;
+        	if(p > 0 && squareX + paddle_width + paddle_speed > border_width)
+        		return false;
+        	return true;
         }
 
 		function drawSquare(){
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			ctx.fillStyle = "red";
 			ctx.fillRect(squareX, squareY, paddle_width, paddle_height);
 			ctx.fillStyle = "yellow"; //its like that harry potter thing
 			ctx.fillRect(ballX, ballY, ballSize, ballSize);
+			boxArray.forEach((box) =>{
+				if(!box.hit){
+					ctx.fillStyle = "white";
+					ctx.fillRect(box.x, box.y, box.size, box.size);
+				}
+			});
 		}
 
 		function resolveball(){
+
+			if(paddle_left && resolveborders(paddle_speed * -1) ){
+				squareX -= paddle_speed;
+			}
+			if(paddle_right && resolveborders(paddle_speed) ){
+				squareX += paddle_speed;
+			}
+
+			if(ballY < Math.floor(border_height * 0.10) + Math.floor(border_width * 0.10) ){
+				boxArray.forEach( (box) =>{
+					if(!box.hit && box.checkCollision(ballX, ballY, ballSize) ){
+						if(Math.floor(Math.random() * 1) > 0 )
+							incrementX = speed;
+						else
+							incrementX = speed * -1;
+
+						if(incrementY < 0)
+							incrementY = speed;
+						else
+							incrementY = speed * -1;
+					}
+				} );
+			}
 			
 			if(ballY + ballSize >= squareY && ballX >= squareX && ballX <= squareX + paddle_width ){
 				if(Math.floor(Math.random() * 1) > 0 )
 					incrementX = speed;
 				else
 					incrementX = speed * -1;
-				incrementY = speed*-1;
+				incrementY = speed * -1;
 				//console.log("incrementX = "+incrementX);
 			}
 			if(ballX <= 0)
@@ -118,6 +206,7 @@
 		}
 
 		function animate() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			resolveball();
             drawSquare();
             requestAnimationFrame(animate);
