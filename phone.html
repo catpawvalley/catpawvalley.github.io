@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Background Color</title>
+  <style>
+    /* Default background color (blue) */
+    body {
+      background-color: blue;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: white;
+    }
+
+    /* Media query for phones (max-width: 600px) */
+    @media only screen and (max-width: 600px) {
+      body {
+        background-color: green;
+      }
+    }
+
+    /* Just for styling purposes */
+    .container {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Responsive Background Color</h1>
+    <p>This background is blue on desktop and green on mobile.</p>
+    <p>Resize the browser window to see the effect!</p>
+  </div>
+</body>
+</html>
