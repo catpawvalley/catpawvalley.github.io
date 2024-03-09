@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: #f0f0f0;
+        }
+    </style>
+    <title>Canvas Animation</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="720" height="1280"></canvas>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var squareSize = 64;
+        var squareX = (canvas.width - squareSize) / 2;
+        var squareY = (canvas.height - squareSize) / 2;
+        var speed = 2;
+        var direction = 1; // 1: move right, 2: move down, 3: move left, 4: move up
+
+        function drawSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+            ctx.fillStyle = "red";
+            ctx.fillRect(squareX, squareY, squareSize, squareSize);
+        }
+
+        function updateSquare() {
+            if (direction === 1) {
+                squareX += speed;
+                if (squareX + squareSize > canvas.width) {
+                    direction = 2;
+                }
+            } else if (direction === 2) {
+                squareY += speed;
+                if (squareY + squareSize > canvas.height) {
+                    direction = 3;
+                }
+            } else if (direction === 3) {
+                squareX -= speed;
+                if (squareX < 0) {
+                    direction = 4;
+                }
+            } else if (direction === 4) {
+                squareY -= speed;
+                if (squareY < 0) {
+                    direction = 1;
+                }
+            }
+        }
+
+        function animate() {
+            drawSquare();
+            updateSquare();
+            requestAnimationFrame(animate);
+        }
+
+        animate(); // Start the animation loop
+    </script>
+</body>
+</html>
