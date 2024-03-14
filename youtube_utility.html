@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>List of Images</title>
+	<script src="youtube_utility.js" defer></script>
+</head>
+<body>
+	<h1>Filename displays here</h1>
+
+	<button id="load-file-button">Load Image List File</button>
+
+	<button id="createFileBtn">Create Text File</button>
+
+	<input type="text" id="textbox" name="textbox">
+
+	<button id="addBtn">Add</button>
+
+	<input type="text" id="filter_text">
+
+	<button id="filter_btn">Filter</button>
+
+	<br>
+	<br>
+
+	<input type="text" id="remove_box">
+
+	<button id="removeBtn">Remove</button>
+
+	(Removes by video ID)
+
+	<div id="image-list"></div>
+
+	<script>
+		const container = document.getElementById('image-list');
+
+		// Function to load image URLs from a text file
+		function loadImagesFromFile() {
+			// Create a new file input element
+			const input = document.createElement('input');
+			input.type = 'file';
+
+			// Add an event listener to handle file selection
+			input.addEventListener('change', event => {
+				const file = event.target.files[0];
+
+				// Create a new file reader object
+				const reader = new FileReader();
+
+				// Add an event listener to handle file reading
+				reader.addEventListener('load', event => {
+					const data = event.target.result;
+
+					// Split the file contents by line breaks
+					const imageUrls = data.split('\n');
+
+					// Loop through the URLs and create image elements
+					imageUrls.forEach(url => {
+						if(url.indexOf("www.youtube.com") == -1 & url.indexOf("youtu.be") == -1)
+							return;
+						// Create a new image element
+						const img = document.createElement('img');
+						const a_ele = document.createElement('a');
+
+						// Set the source of the image to the URL
+						let start;
+						let end;
+						let string_final;
+						if(url.indexOf("youtu.be") != -1){
+							start = url.indexOf(".be/") + 4;
+							end = url.indexOf("?");
+							
+						}
+						else{
+							start = url.indexOf("watch?v=") + 8;
+							end = -1;
+						}
+						if(end != -1)
+							string_final = url.substring(start, end);
+						else
+							string_final = url.substring(start);
+						//
+						img.src = "https://img.youtube.com/vi/"+string_final+"/hqdefault.jpg";
+						//img.src = "https://img.youtube.com/vi/YQ_xWvX1n9g/hqdefault.jpg;"
+						img.setAttribute("title", url);
+						a_ele.setAttribute("href", url);
+						// Add the image element to the container
+						a_ele.appendChild(img);
+						container.appendChild(a_ele);
+					});
+				});
+				// Read the file contents as text
+				reader.readAsText(file);
+			});
+
+			// Click the input element to trigger the file selection dialog
+			input.click();
+		}
+
+		// Add an event listener to the button
+		const button = document.getElementById('load-file-button');
+		button.addEventListener('click', loadImagesFromFile);
+	</script>
+
+	<style>
+		/* Style the images to display in rows and columns */
+		img {
+			display: inline-block;
+			width: 20%;
+			height: 20%;
+			object-fit: cover;
+			margin: 10px;
+		}
+
+		
+	</style>
+</body>
+</html>
